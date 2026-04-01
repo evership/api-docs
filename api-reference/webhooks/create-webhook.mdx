@@ -4,7 +4,21 @@ api: "POST https://api.evership.app/v1/webhooks"
 description: "Register a webhook to receive real-time shipment updates"
 ---
 
-Creates a webhook subscription to receive real-time notifications when shipment events occur (e.g. status changes, delivery updates).
+Creates a webhook subscription to receive real-time notifications when shipment events occur.
+
+## Request Body
+
+<ParamField body="url" type="string" required>
+  The URL that will receive webhook POST requests.
+</ParamField>
+
+<ParamField body="events" type="array" required>
+  Array of event types to subscribe to. Valid event types:
+  - `shipments` — Shipment creation and status changes
+  - `labels` — Label generation events
+  - `tracking_status` — Tracking status updates
+  - `tracking_log` — Tracking log entries
+</ParamField>
 
 <RequestExample>
 ```bash cURL
@@ -13,7 +27,7 @@ curl -X POST https://api.evership.app/v1/webhooks \
   -H "Content-Type: application/json" \
   -d '{
     "url": "https://your-app.com/webhooks/evership",
-    "events": ["shipment.updated", "shipment.delivered"]
+    "events": ["shipments", "tracking_status"]
   }'
 ```
 </RequestExample>

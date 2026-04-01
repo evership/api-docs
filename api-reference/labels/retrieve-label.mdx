@@ -22,3 +22,25 @@ curl -X GET "https://api.evership.app/v1/shipments/label?shipment_id=SHIPMENT_ID
   -H "apiKey: YOUR_API_KEY"
 ```
 </RequestExample>
+
+<ResponseExample>
+```json 200
+{
+  "shipment_id": "4rOnD",
+  "labels": [
+    {
+      "label_url": "56045_20260325135914_10_10pdf",
+      "label_format": "10_10"
+    },
+    {
+      "label_url": "56045_20260325135914_10_15pdf",
+      "label_format": "10_15"
+    },
+    {
+      "label_url": "56045_20260325135914_a4_pagepdf",
+      "label_format": "a4_page"
+    }
+  ]
+}
+```
+</ResponseExample>

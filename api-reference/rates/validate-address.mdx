@@ -52,3 +52,32 @@ curl -X POST https://api.evership.app/v1/validate-address \
   }'
 ```
 </RequestExample>
+
+<ResponseExample>
+```json 200
+{
+  "status": "success",
+  "validation_status": "fully_matched",
+  "partial_match": false,
+  "matched_address": [
+    {
+      "formatted_address": "14 Highland Cl, Devil's Peak Estate, Cape Town, 8001, South Africa",
+      "address_components": {
+        "address_1": "14 Highland Close",
+        "address_2": null,
+        "suburb": "Devil's Peak Estate",
+        "city": "Cape Town",
+        "province": "Western Cape",
+        "postal_code": "8001",
+        "country": "South Africa"
+      },
+      "coordinates": {
+        "latitude": -33.9375083,
+        "longitude": 18.4331856
+      }
+    }
+  ],
+  "partial_match_suggestions": []
+}
+```
+</ResponseExample>

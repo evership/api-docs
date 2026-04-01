@@ -22,3 +22,13 @@ curl -X GET "https://api.evership.app/v1/shipments/labels?shipment_ids=ID_1,ID_2
   -H "apiKey: YOUR_API_KEY"
 ```
 </RequestExample>
+
+<ResponseExample>
+```json 200
+{
+  "label_format": "10_10",
+  "label_batch_id": "batch_lm0kfn",
+  "label_url": "https://carter-live.s3.us-east-2.amazonaws.com/shipment/label/batch_lm0kfn.pdf"
+}
+```
+</ResponseExample>

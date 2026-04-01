@@ -18,3 +18,32 @@ curl -X GET "https://api.evership.app/v1/shipments/tracking-status?shipment_ids=
   -H "apiKey: YOUR_API_KEY"
 ```
 </RequestExample>
+
+<ResponseExample>
+```json 200
+{
+  "shipments": [
+    {
+      "shipment_id": "4rOnD",
+      "shipment_title": "API Test - Purchase Flow",
+      "waybill_number": "CTR692257683",
+      "timestamp": "2026-03-25T14:18:24Z",
+      "comments": "Collection could not be completed",
+      "location": "cpt",
+      "latest_status": {
+        "primary_status": {
+          "status": "collection_failed",
+          "slug": "collection_failed",
+          "code": 28
+        },
+        "secondary_status": "collection_failed"
+      },
+      "created_time": "2026-03-25T13:59:14Z",
+      "last_updated_time": "2026-03-25T14:23:27Z",
+      "est_delivery": "2026-03-26 11:30:00",
+      "est_delivery_text": "Thursday, 26th March before 11:30 AM"
+    }
+  ]
+}
+```
+</ResponseExample>

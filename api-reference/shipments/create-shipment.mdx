@@ -155,3 +155,88 @@ curl -X POST https://api.evership.app/v1/shipments \
   }'
 ```
 </RequestExample>
+
+<ResponseExample>
+```json 200
+{
+  "shipment_id": "4rOc1",
+  "waybill_number": "",
+  "created_at": "2026-04-01T14:02:37Z",
+  "last_updated_at": "2026-04-01T14:02:43Z",
+  "shipment_title": "API Docs Test",
+  "shipment_type": "outbound",
+  "label_purchased": false,
+  "collection_date": "2026-04-10",
+  "billing": [],
+  "sender": {
+    "name": "Jane Doe",
+    "contact": "0761234567",
+    "email": "jane@example.com",
+    "collection_address": {
+      "address_1": "12 Clyde Road",
+      "address_2": "",
+      "suburb": "Green Point",
+      "city": "Cape Town",
+      "province": "Western Cape",
+      "postal_code": "8005",
+      "country": "South Africa",
+      "full_address": "12 Clyde Road, Green Point, Cape Town, Western Cape, 8005, South Africa",
+      "latitude": -33.9069597,
+      "longitude": 18.4064322,
+      "geocode_status": "valid"
+    },
+    "pickup_instructions": "Ring the bell"
+  },
+  "receiver": {
+    "name": "John Smith",
+    "contact": "0769876543",
+    "email": "john@example.com",
+    "delivery_address": {
+      "address_1": "14 Highland Close",
+      "address_2": "",
+      "suburb": "Vredehoek",
+      "city": "Cape Town",
+      "province": "Western Cape",
+      "postal_code": "8001",
+      "country": "South Africa",
+      "full_address": "14 Highland Close, Vredehoek, Cape Town, Western Cape, 8001, South Africa",
+      "latitude": -33.9410855,
+      "longitude": 18.4231538,
+      "geocode_status": "valid"
+    },
+    "drop_off_instructions": "Leave at front door"
+  },
+  "latest_status": [],
+  "services": {
+    "service_type": "shipment",
+    "carrier_slug": "dpd",
+    "carrier_name": "DPD Laser",
+    "service_name": "ONX",
+    "service_slug": "dpd-onx",
+    "service_full_name": "OVERNIGHT EXPRESS",
+    "service_sla_text": "Next day",
+    "service_transit_days": 1
+  },
+  "parcels": [
+    {
+      "id": "4rO9J",
+      "parcel_number": null,
+      "reference": "REF-001",
+      "description": "Electronics",
+      "dimensions": {
+        "length_cm": 30,
+        "width_cm": 25,
+        "height_cm": 7
+      },
+      "weight_kg": 1
+    }
+  ],
+  "tracking_log": [],
+  "est_delivery": {},
+  "labels": {},
+  "tracking_link": {},
+  "status": "success",
+  "message": "Draft shipment created successfully"
+}
+```
+</ResponseExample>

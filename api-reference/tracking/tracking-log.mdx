@@ -29,3 +29,67 @@ curl -X GET "https://api.evership.app/v1/shipments/tracking-log?waybill_number=C
   -H "apiKey: YOUR_API_KEY"
 ```
 </RequestExample>
+
+<ResponseExample>
+```json 200
+{
+  "shipment_id": "4rOnD",
+  "shipment_title": "API Test - Purchase Flow",
+  "waybill_number": "CTR692257683",
+  "latest_status": {
+    "primary_status": {
+      "status": "collection_failed",
+      "slug": "collection_failed",
+      "code": 28
+    },
+    "secondary_status": "collection_failed"
+  },
+  "created_time": "2026-03-25T13:59:14Z",
+  "last_updated_time": "2026-03-25T14:23:27Z",
+  "est_delivery": "2026-03-26 11:30:00",
+  "est_delivery_text": "Thursday, 26th March before 11:30 AM",
+  "tracking_log": [
+    {
+      "timestamp": "2026-03-25T11:59:14Z",
+      "primary_status": {
+        "status": "Pending",
+        "slug": "pending",
+        "code": null
+      },
+      "comments": "Shipment created",
+      "location": ""
+    },
+    {
+      "timestamp": "2026-03-25T11:59:23Z",
+      "primary_status": {
+        "status": "Purchased",
+        "slug": "purchased",
+        "code": null
+      },
+      "comments": "Label purchased",
+      "location": ""
+    },
+    {
+      "timestamp": "2026-03-25T11:59:23Z",
+      "primary_status": {
+        "status": "Collection Requested",
+        "slug": "collection_requested",
+        "code": null
+      },
+      "comments": "For collection on Wed, 25 Mar",
+      "location": ""
+    },
+    {
+      "timestamp": "2026-03-25T11:59:28Z",
+      "primary_status": {
+        "status": "Collection Approved",
+        "slug": "collection_approved",
+        "code": null
+      },
+      "comments": "Carrier collecting on Wed, 25 Mar",
+      "location": ""
+    }
+  ]
+}
+```
+</ResponseExample>

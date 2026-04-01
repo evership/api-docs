@@ -75,12 +75,12 @@ Updates the details of an existing shipment. You can modify the sender, receiver
     <ParamField body="description" type="string">Description of parcel contents</ParamField>
     <ParamField body="dimensions" type="object">
       <Expandable title="properties">
-        <ParamField body="length" type="number">Length in cm</ParamField>
-        <ParamField body="width" type="number">Width in cm</ParamField>
-        <ParamField body="height" type="number">Height in cm</ParamField>
+        <ParamField body="length_cm" type="number">Length in cm</ParamField>
+        <ParamField body="width_cm" type="number">Width in cm</ParamField>
+        <ParamField body="height_cm" type="number">Height in cm</ParamField>
       </Expandable>
     </ParamField>
-    <ParamField body="weight" type="number">Weight in kg</ParamField>
+    <ParamField body="weight_kg" type="number">Weight in kg</ParamField>
   </Expandable>
 </ParamField>
 
@@ -128,11 +128,11 @@ curl -X PUT https://api.evership.app/v1/shipments/SHIPMENT_ID \
         "reference": "REF-001",
         "description": "Electronics",
         "dimensions": {
-          "length": 10,
-          "width": 10,
-          "height": 10
+          "length_cm": 10,
+          "width_cm": 10,
+          "height_cm": 10
         },
-        "weight": 2
+        "weight_kg": 2
       }
     ],
     "shipment_title": "Updated title",

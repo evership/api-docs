@@ -70,3 +70,97 @@ curl -X GET "https://api.evership.app/v1/shipments?page=1&results_per_page=25&ca
   -H "apiKey: YOUR_API_KEY"
 ```
 </RequestExample>
+
+<ResponseExample>
+```json 200
+{
+  "page": 1,
+  "per_page": 10,
+  "total_pages": 50,
+  "total_shipments": 493,
+  "shipments": [
+    {
+      "shipment_id": "4rOnD",
+      "waybill_number": "CTR692257683",
+      "created_at": "2026-03-25T13:59:14Z",
+      "last_updated_at": "2026-03-25T14:23:27Z",
+      "shipment_title": "API Test - Purchase Flow",
+      "shipment_type": "outbound",
+      "payment_status": "processed",
+      "label_purchased": true,
+      "collection_date": "2026-03-25",
+      "billing": [
+        {
+          "transaction_id": "4s3Ih",
+          "timestamp": "2026-03-25T13:59:28.000000Z",
+          "type": "invoice",
+          "description": "Shipment purchased",
+          "transaction_ex_vat": 87.99,
+          "transaction_vat": 13.20,
+          "transaction_inc_vat": 101.19,
+          "transaction_status": "wallet_debited"
+        }
+      ],
+      "sender": {
+        "name": "Jane Doe",
+        "contact": "076 123 4567",
+        "email": "jane@example.com",
+        "collection_address": {
+          "address_1": "12 Clyde Road",
+          "suburb": "Green Point",
+          "city": "Green Point",
+          "province": "Western Cape",
+          "postal_code": "8005",
+          "country": "South Africa",
+          "geocode_status": "fully_matched"
+        },
+        "pickup_instructions": "Test instructions"
+      },
+      "receiver": {
+        "name": "John Smith",
+        "contact": "076 987 6543",
+        "email": "john@example.com",
+        "delivery_address": {
+          "address_1": "26 Washington Road",
+          "suburb": "Claremont",
+          "city": "Claremont",
+          "province": "Western Cape",
+          "postal_code": "7708",
+          "country": "South Africa",
+          "geocode_status": "fully_matched"
+        },
+        "drop_off_instructions": ""
+      },
+      "latest_status": {
+        "primary_status": {
+          "status": "Collection failed",
+          "slug": "collection_failed",
+          "code": 28
+        },
+        "secondary_status": "collection_failed"
+      },
+      "services": [
+        {
+          "carrier_slug": "dpd",
+          "carrier_name": "DPD Laser",
+          "service_slug": "dpd-onx",
+          "service_full_name": "OVERNIGHT EXPRESS"
+        }
+      ],
+      "parcels": [
+        {
+          "id": "4rO4R",
+          "parcel_number": "CTR692257683_1",
+          "dimensions": {
+            "length_cm": 6,
+            "width_cm": 6,
+            "height_cm": 6
+          },
+          "weight_kg": 1
+        }
+      ]
+    }
+  ]
+}
+```
+</ResponseExample>

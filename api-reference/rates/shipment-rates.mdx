@@ -32,3 +32,70 @@ curl -X GET "https://api.evership.app/v1/rates/SHIPMENT_ID?carrier=dpd&return_fa
   -H "apiKey: YOUR_API_KEY"
 ```
 </RequestExample>
+
+<ResponseExample>
+```json 200
+{
+  "status": "success",
+  "service_count": {
+    "total": 12,
+    "successful": 4,
+    "failed": 8
+  },
+  "collection_address": {
+    "validation_status": "fully_matched",
+    "geocoded_address": "12 Clyde Rd, Green Point, Cape Town, 8051, South Africa",
+    "coordinates": {
+      "latitude": -33.9092708,
+      "longitude": 18.4045977
+    }
+  },
+  "delivery_address": {
+    "validation_status": "fully_matched",
+    "geocoded_address": "26 Washington Rd, Claremont, Cape Town, 7708, South Africa",
+    "coordinates": {
+      "latitude": -33.9809314,
+      "longitude": 18.4859561
+    }
+  },
+  "carriers": {
+    "name": "DPD Laser",
+    "slug": "dpd",
+    "logos": [],
+    "collection_windows": [
+      {
+        "windown_name": "Anytime",
+        "start_time": "09:00:00",
+        "end_time": "18:00:00"
+      }
+    ],
+    "services": [
+      {
+        "status": "success",
+        "code": "X",
+        "slug": "dpd-onx",
+        "name": "OVERNIGHT EXPRESS",
+        "transit_duration": 1,
+        "service_level": "Next day",
+        "collection": {
+          "cut_off_date": "2026-04-01",
+          "cut_off_time": "23:55:00",
+          "collection_cut_off": "Wednesday, 1st April 2026 by 11:55 PM"
+        },
+        "delivery": {
+          "latest_est_date": "2026-04-02",
+          "latest_est_time": "11:30:00",
+          "delivery_estimate": "Thursday, 2nd April 2026 by 11:30 AM"
+        },
+        "rate": {
+          "currency": "ZAR",
+          "rate_ex_vat": "85.70",
+          "vat": "14.36",
+          "rate_inc_vat": "110.06"
+        }
+      }
+    ]
+  }
+}
+```
+</ResponseExample>
