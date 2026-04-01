@@ -71,6 +71,22 @@ These are the main statuses that track a shipment through its lifecycle.
 | 14 | **Error** | `error` | Error received from carrier tracking |
 | 15 | **Delayed** | `delayed` | Shipment has been delayed in transit |
 
+## Secondary statuses
+
+Secondary statuses provide more granular detail within a primary status. They appear in the `secondary_status` field of tracking events.
+
+| Code | Primary Status | Secondary Status | Slug | Description |
+| --- | --- | --- | --- | --- |
+| 4A | Out for collection | **Arrived to collect** | `arrived_collection` | Carrier driver has confirmed their arrival at the pickup address |
+| 7A | In transit | **Processed at hub** | `hub_processed` | Parcel has been scanned and processed at a carrier sorting hub |
+| 7B | In transit | **Delivery date calculated** | `delivery_date_calculated` | Carrier has calculated the estimated delivery date |
+| 7C | In transit | **Delivery scheduled** | `delivery_scheduled` | Delivery has been scheduled for a specific date |
+| 8A | Out for delivery | **Arrived to deliver** | `arrived_deliver` | Carrier driver has confirmed their arrival at the drop off address |
+| 10A | Delivery failed | **Returning** | `returning` | Carrier driver is on the way to the return address |
+| 10B | Delivery failed | **Arrived to return** | `arrived_return` | Carrier driver has confirmed their arrival at the return address, to return the undelivered shipment |
+| 13A | Cancelled | **Cancelled** | `cancelled_user` | User cancelled the shipment |
+| 13B | Cancelled | **Cancelled by carrier** | `cancelled_carrier` | Carrier cancelled the shipment |
+
 ## Status details
 
 ### pending
