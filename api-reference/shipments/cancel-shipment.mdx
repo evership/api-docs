@@ -1,0 +1,20 @@
+---
+title: "Cancel Shipment"
+api: "POST https://api.evership.app/v1/shipments/cancel/{shipment_id}"
+description: "Cancel a purchased shipment"
+---
+
+Cancels a shipment that has already been purchased. This will attempt to cancel the collection with the carrier.
+
+## Path Parameters
+
+<ParamField path="shipment_id" type="string" required>
+  The ID of the shipment to cancel.
+</ParamField>
+
+<RequestExample>
+```bash cURL
+curl -X POST https://api.evership.app/v1/shipments/cancel/SHIPMENT_ID \
+  -H "apiKey: YOUR_API_KEY"
+```
+</RequestExample>

@@ -1,0 +1,30 @@
+---
+title: API Reference
+description: "Complete reference for the Evership Shipments API"
+---
+
+## Overview
+
+The Evership Shipments API is organized around the following resources:
+
+| Resource | Description |
+| --- | --- |
+| [Rates](/api-reference/rates/validate-address) | Validate addresses and get shipping rates from multiple carriers |
+| [Shipments](/api-reference/shipments/create-shipment) | Create, edit, purchase, cancel, and manage shipments |
+| [Labels](/api-reference/labels/retrieve-label) | Generate and retrieve shipping labels in various formats |
+| [Tracking](/api-reference/tracking/tracking-status) | Get tracking status and detailed tracking logs |
+| [Webhooks](/api-reference/webhooks/create-webhook) | Set up webhooks to receive real-time shipment updates |
+
+## Base URL
+
+```
+https://api.evership.app/v1
+```
+
+## Authentication
+
+All endpoints require an API key passed via the `apiKey` header. See the [Authentication](/authentication) page for details.
+
+## Content Type
+
+All `POST` and `PUT` requests must include `Content-Type: application/json` and send a JSON body.

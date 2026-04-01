@@ -1,0 +1,20 @@
+---
+title: "Retrieve Shipment"
+api: "GET https://api.evership.app/v1/shipments/{shipment_id}"
+description: "Retrieve details of a specific shipment"
+---
+
+Returns full details of a single shipment including sender, receiver, parcel, carrier, and status information.
+
+## Path Parameters
+
+<ParamField path="shipment_id" type="string" required>
+  The ID of the shipment to retrieve.
+</ParamField>
+
+<RequestExample>
+```bash cURL
+curl -X GET https://api.evership.app/v1/shipments/SHIPMENT_ID \
+  -H "apiKey: YOUR_API_KEY"
+```
+</RequestExample>

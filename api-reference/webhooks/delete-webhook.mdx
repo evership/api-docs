@@ -1,0 +1,14 @@
+---
+title: "Delete Webhook"
+api: "DELETE https://api.evership.app/v1/webhooks"
+description: "Remove a webhook subscription"
+---
+
+Deletes an existing webhook subscription. You will no longer receive notifications at the webhook URL.
+
+<RequestExample>
+```bash cURL
+curl -X DELETE https://api.evership.app/v1/webhooks/WEBHOOK_ID \
+  -H "apiKey: YOUR_API_KEY"
+```
+</RequestExample>

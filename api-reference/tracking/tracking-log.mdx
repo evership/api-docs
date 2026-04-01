@@ -1,0 +1,31 @@
+---
+title: "Tracking Log"
+api: "GET https://api.evership.app/v1/shipments/tracking-log"
+description: "Get the detailed tracking log for a shipment"
+---
+
+Returns the full tracking history for a shipment. You can look up by either shipment ID or waybill number.
+
+## Query Parameters
+
+<ParamField query="shipment_id" type="string">
+  The shipment ID to get the tracking log for.
+</ParamField>
+
+<ParamField query="waybill_number" type="string">
+  The carrier waybill/tracking number to look up.
+</ParamField>
+
+<Note>Provide either `shipment_id` or `waybill_number` — at least one is required.</Note>
+
+<RequestExample>
+```bash By shipment ID
+curl -X GET "https://api.evership.app/v1/shipments/tracking-log?shipment_id=SHIPMENT_ID" \
+  -H "apiKey: YOUR_API_KEY"
+```
+
+```bash By waybill number
+curl -X GET "https://api.evership.app/v1/shipments/tracking-log?waybill_number=CTR794257438" \
+  -H "apiKey: YOUR_API_KEY"
+```
+</RequestExample>

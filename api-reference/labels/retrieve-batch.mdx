@@ -1,0 +1,20 @@
+---
+title: "Retrieve Label Batch"
+api: "GET https://api.evership.app/v1/shipments/labels/{batch_id}"
+description: "Retrieve a previously created label batch"
+---
+
+Retrieves the status and labels for a previously created batch. Use the batch ID returned from the [Create Label Batch](/api-reference/labels/create-batch) endpoint.
+
+## Path Parameters
+
+<ParamField path="batch_id" type="string" required>
+  The batch ID returned when the batch was created (e.g. `batch_pywoz0`).
+</ParamField>
+
+<RequestExample>
+```bash cURL
+curl -X GET https://api.evership.app/v1/shipments/labels/BATCH_ID \
+  -H "apiKey: YOUR_API_KEY"
+```
+</RequestExample>

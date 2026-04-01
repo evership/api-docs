@@ -1,0 +1,104 @@
+---
+title: "Get Rates"
+api: "POST https://api.evership.app/v1/rates"
+description: "Get shipping rates from multiple carriers for a given route and parcel"
+---
+
+Returns available shipping rates from all supported carriers for the specified collection and delivery addresses and parcel dimensions.
+
+## Request Body
+
+<ParamField body="collection_address" type="object" required>
+  The pickup address.
+  <Expandable title="properties">
+    <ParamField body="address_1" type="string" required>Primary street address</ParamField>
+    <ParamField body="address_2" type="string">Secondary address line</ParamField>
+    <ParamField body="suburb" type="string" required>Suburb name</ParamField>
+    <ParamField body="city" type="string" required>City name</ParamField>
+    <ParamField body="province" type="string" required>Province name</ParamField>
+    <ParamField body="postal_code" type="string" required>Postal code</ParamField>
+    <ParamField body="country" type="string" required>Country name</ParamField>
+    <ParamField body="latitude" type="string">Latitude coordinate (optional)</ParamField>
+    <ParamField body="longitude" type="string">Longitude coordinate (optional)</ParamField>
+  </Expandable>
+</ParamField>
+
+<ParamField body="delivery_address" type="object" required>
+  The delivery address.
+  <Expandable title="properties">
+    <ParamField body="address_1" type="string" required>Primary street address</ParamField>
+    <ParamField body="address_2" type="string">Secondary address line</ParamField>
+    <ParamField body="suburb" type="string" required>Suburb name</ParamField>
+    <ParamField body="city" type="string" required>City name</ParamField>
+    <ParamField body="province" type="string" required>Province name</ParamField>
+    <ParamField body="postal_code" type="string" required>Postal code</ParamField>
+    <ParamField body="country" type="string" required>Country name</ParamField>
+    <ParamField body="latitude" type="string">Latitude coordinate (optional)</ParamField>
+    <ParamField body="longitude" type="string">Longitude coordinate (optional)</ParamField>
+  </Expandable>
+</ParamField>
+
+<ParamField body="parcels" type="array" required>
+  Array of parcels to ship.
+  <Expandable title="properties">
+    <ParamField body="dimensions" type="object" required>
+      <Expandable title="properties">
+        <ParamField body="length" type="number" required>Length in cm</ParamField>
+        <ParamField body="width" type="number" required>Width in cm</ParamField>
+        <ParamField body="height" type="number" required>Height in cm</ParamField>
+      </Expandable>
+    </ParamField>
+    <ParamField body="weight" type="number" required>Weight in kg</ParamField>
+  </Expandable>
+</ParamField>
+
+<ParamField body="carrier" type="string">
+  Filter rates to a specific carrier (e.g. "dpd"). Leave empty for all carriers.
+</ParamField>
+
+<ParamField body="carrier_service" type="string">
+  Filter rates to a specific carrier service. Leave empty for all services.
+</ParamField>
+
+<ParamField body="return_failed_quotes" type="boolean" default="false">
+  When `true`, includes failed quotes in the response with error details.
+</ParamField>
+
+<RequestExample>
+```bash cURL
+curl -X POST https://api.evership.app/v1/rates \
+  -H "apiKey: YOUR_API_KEY" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "collection_address": {
+      "address_1": "12 Clyde Rd",
+      "suburb": "Green Point",
+      "city": "Cape Town",
+      "province": "Western Cape",
+      "postal_code": "8005",
+      "country": "South Africa"
+    },
+    "delivery_address": {
+      "address_1": "26 Washington Rd",
+      "suburb": "Claremont",
+      "city": "Cape Town",
+      "province": "Western Cape",
+      "postal_code": "7708",
+      "country": "South Africa"
+    },
+    "parcels": [
+      {
+        "dimensions": {
+          "length": 6,
+          "width": 6,
+          "height": 6
+        },
+        "weight": 1
+      }
+    ],
+    "carrier": "",
+    "carrier_service": "",
+    "return_failed_quotes": false
+  }'
+```
+</RequestExample>

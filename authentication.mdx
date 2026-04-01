@@ -1,0 +1,43 @@
+---
+title: Authentication
+description: "Learn how to authenticate with the Evership API"
+---
+
+## API Key Authentication
+
+All requests to the Evership API must include your API key in the request headers.
+
+### Header
+
+Include the `apiKey` header in every request:
+
+```bash
+curl -X GET https://api.evership.app/v1/shipments \
+  -H "apiKey: YOUR_API_KEY"
+```
+
+### Getting your API key
+
+1. Log in to your [Evership Dashboard](https://app.evership.app)
+2. Navigate to your account settings
+3. Copy your API key
+
+<Warning>
+  Keep your API key secure. Do not share it publicly or commit it to version control.
+</Warning>
+
+### Example request
+
+```bash
+curl -X POST https://api.evership.app/v1/validate-address \
+  -H "apiKey: YOUR_API_KEY" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "address_1": "14 Highland Close",
+    "suburb": "Vredehoek",
+    "city": "Cape Town",
+    "province": "Western Cape",
+    "postal_code": "8001",
+    "country": "South Africa"
+  }'
+```

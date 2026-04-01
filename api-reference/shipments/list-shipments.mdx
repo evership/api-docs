@@ -1,0 +1,72 @@
+---
+title: "List Shipments"
+api: "GET https://api.evership.app/v1/shipments"
+description: "List all shipments with optional filters"
+---
+
+Returns a paginated list of your shipments. Use query parameters to filter by date, region, carrier, status, and more.
+
+## Query Parameters
+
+<ParamField query="page" type="integer">
+  Page number for pagination.
+</ParamField>
+
+<ParamField query="results_per_page" type="integer">
+  Number of results per page.
+</ParamField>
+
+<ParamField query="shipment_type" type="string">
+  Filter by shipment type. Possible values: `outbound`, `inbound`, `transfer`.
+</ParamField>
+
+<ParamField query="carrier" type="string">
+  Filter by carrier (e.g. "dpd").
+</ParamField>
+
+<ParamField query="payment_status" type="string">
+  Filter by payment status (e.g. "processed").
+</ParamField>
+
+<ParamField query="geo_coded_status" type="string">
+  Filter by geocoding status (e.g. "fully_matched").
+</ParamField>
+
+<ParamField query="collection_region" type="string">
+  Filter by collection region/province (e.g. "Western Cape").
+</ParamField>
+
+<ParamField query="delivery_region" type="string">
+  Filter by delivery region/province. Comma-separated for multiple values (e.g. "Western Cape,Gauteng").
+</ParamField>
+
+<ParamField query="created_date_range_start" type="string">
+  Filter shipments created on or after this date (`YYYY-MM-DD`).
+</ParamField>
+
+<ParamField query="created_date_range_end" type="string">
+  Filter shipments created on or before this date (`YYYY-MM-DD`).
+</ParamField>
+
+<ParamField query="collection_date_range_start" type="string">
+  Filter by collection date start (`YYYY-MM-DD`).
+</ParamField>
+
+<ParamField query="collection_date_range_end" type="string">
+  Filter by collection date end (`YYYY-MM-DD`).
+</ParamField>
+
+<ParamField query="last_updated_range_start" type="string">
+  Filter by last updated date start (`YYYY-MM-DD`).
+</ParamField>
+
+<ParamField query="last_updated_range_end" type="string">
+  Filter by last updated date end (`YYYY-MM-DD`).
+</ParamField>
+
+<RequestExample>
+```bash cURL
+curl -X GET "https://api.evership.app/v1/shipments?page=1&results_per_page=25&carrier=dpd" \
+  -H "apiKey: YOUR_API_KEY"
+```
+</RequestExample>

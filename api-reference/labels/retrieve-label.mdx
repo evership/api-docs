@@ -1,0 +1,24 @@
+---
+title: "Retrieve Label"
+api: "GET https://api.evership.app/v1/shipments/label"
+description: "Retrieve shipping labels for a shipment in specified formats"
+---
+
+Retrieves shipping labels for a purchased shipment. You can request labels in multiple formats simultaneously.
+
+## Query Parameters
+
+<ParamField query="shipment_id" type="string" required>
+  The ID of the shipment to get labels for.
+</ParamField>
+
+<ParamField query="label_formats" type="string" required>
+  Comma-separated list of label formats. Possible values: `10_10`, `10_15`, `a4_page`.
+</ParamField>
+
+<RequestExample>
+```bash cURL
+curl -X GET "https://api.evership.app/v1/shipments/label?shipment_id=SHIPMENT_ID&label_formats=10_10,10_15,a4_page" \
+  -H "apiKey: YOUR_API_KEY"
+```
+</RequestExample>

@@ -1,0 +1,34 @@
+---
+title: "Shipment Rates"
+api: "GET https://api.evership.app/v1/rates/{shipment_id}"
+description: "Get rates for an existing shipment"
+---
+
+Retrieves available shipping rates for a shipment that has already been created. This is useful when you want to compare carrier options before purchasing a label.
+
+## Path Parameters
+
+<ParamField path="shipment_id" type="string" required>
+  The ID of the shipment to get rates for.
+</ParamField>
+
+## Query Parameters
+
+<ParamField query="carrier" type="string">
+  Filter rates to a specific carrier (e.g. "dpd"). Leave empty for all carriers.
+</ParamField>
+
+<ParamField query="carrier_service" type="string">
+  Filter rates to a specific carrier service. Leave empty for all services.
+</ParamField>
+
+<ParamField query="return_failed_quotes" type="boolean" default="false">
+  When `true`, includes failed quotes in the response with error details.
+</ParamField>
+
+<RequestExample>
+```bash cURL
+curl -X GET "https://api.evership.app/v1/rates/SHIPMENT_ID?carrier=dpd&return_failed_quotes=false" \
+  -H "apiKey: YOUR_API_KEY"
+```
+</RequestExample>

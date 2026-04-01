@@ -1,0 +1,19 @@
+---
+title: "Create Webhook"
+api: "POST https://api.evership.app/v1/webhooks"
+description: "Register a webhook to receive real-time shipment updates"
+---
+
+Creates a webhook subscription to receive real-time notifications when shipment events occur (e.g. status changes, delivery updates).
+
+<RequestExample>
+```bash cURL
+curl -X POST https://api.evership.app/v1/webhooks \
+  -H "apiKey: YOUR_API_KEY" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "url": "https://your-app.com/webhooks/evership",
+    "events": ["shipment.updated", "shipment.delivered"]
+  }'
+```
+</RequestExample>

@@ -1,0 +1,52 @@
+---
+title: "Delete Shipment"
+api: "DELETE https://api.evership.app/v1/shipments"
+description: "Delete one or more unpurchased shipments"
+---
+
+Deletes one or more shipments. Supports batch deletion by passing multiple comma-separated shipment IDs. Only unpurchased shipments can be deleted.
+
+## Query Parameters
+
+<ParamField query="shipment_ids" type="string" required>
+  Comma-separated list of shipment IDs to delete (e.g. `"id1,id2,id3"`).
+</ParamField>
+
+<RequestExample>
+```bash Single delete
+curl -X DELETE "https://api.evership.app/v1/shipments?shipment_ids=SHIPMENT_ID" \
+  -H "apiKey: YOUR_API_KEY"
+```
+
+```bash Batch delete
+curl -X DELETE "https://api.evership.app/v1/shipments?shipment_ids=ID_1,ID_2,ID_3" \
+  -H "apiKey: YOUR_API_KEY"
+```
+</RequestExample>
+
+<ResponseExample>
+```json 200
+{
+  "summary": {
+    "deleted": 4,
+    "failed": 1,
+    "total": 5
+  },
+  "results": [
+    {
+      "shipment_id": "4rUHm",
+      "status": "deleted"
+    },
+    {
+      "shipment_id": "4rUHt",
+      "status": "deleted"
+    },
+    {
+      "shipment_id": "4rUHe",
+      "status": "not_found",
+      "error_message": "This shipment was not found"
+    }
+  ]
+}
+```
+</ResponseExample>

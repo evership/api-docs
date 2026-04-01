@@ -1,0 +1,24 @@
+---
+title: "Create Label Batch"
+api: "GET https://api.evership.app/v1/shipments/labels"
+description: "Create a batch of labels for multiple shipments"
+---
+
+Generates labels for multiple shipments in a single request. Returns a batch ID that you can use to retrieve the labels once processing is complete.
+
+## Query Parameters
+
+<ParamField query="shipment_ids" type="string" required>
+  Comma-separated list of shipment IDs to generate labels for.
+</ParamField>
+
+<ParamField query="label_formats" type="string" required>
+  Comma-separated list of label formats. Possible values: `10_10`, `10_15`, `a4_page`.
+</ParamField>
+
+<RequestExample>
+```bash cURL
+curl -X GET "https://api.evership.app/v1/shipments/labels?shipment_ids=ID_1,ID_2,ID_3&label_formats=10_10" \
+  -H "apiKey: YOUR_API_KEY"
+```
+</RequestExample>

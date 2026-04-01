@@ -1,0 +1,108 @@
+{
+  "$schema": "https://mintlify.com/schema.json",
+  "name": "Evership API",
+  "logo": {
+    "dark": "/logo/dark.svg",
+    "light": "/logo/light.svg"
+  },
+  "favicon": "/favicon.svg",
+  "colors": {
+    "primary": "#0D9373",
+    "light": "#07C983",
+    "dark": "#0D9373",
+    "anchors": {
+      "from": "#0D9373",
+      "to": "#07C983"
+    }
+  },
+  "topbarLinks": [
+    {
+      "name": "Support",
+      "url": "mailto:support@evership.co.za"
+    }
+  ],
+  "topbarCtaButton": {
+    "name": "Dashboard",
+    "url": "https://app.evership.app"
+  },
+  "tabs": [
+    {
+      "name": "API Reference",
+      "url": "api-reference"
+    }
+  ],
+  "anchors": [
+    {
+      "name": "API Reference",
+      "icon": "book-open-cover",
+      "url": "api-reference"
+    }
+  ],
+  "navigation": [
+    {
+      "group": "Get Started",
+      "pages": [
+        "introduction",
+        "authentication"
+      ]
+    },
+    {
+      "group": "API Reference",
+      "pages": [
+        "api-reference/introduction"
+      ]
+    },
+    {
+      "group": "Rates",
+      "pages": [
+        "api-reference/rates/validate-address",
+        "api-reference/rates/get-rates",
+        "api-reference/rates/shipment-rates"
+      ]
+    },
+    {
+      "group": "Shipments",
+      "pages": [
+        "api-reference/shipments/create-shipment",
+        "api-reference/shipments/purchase-shipment",
+        "api-reference/shipments/edit-shipment",
+        "api-reference/shipments/retrieve-shipment",
+        "api-reference/shipments/list-shipments",
+        "api-reference/shipments/cancel-shipment",
+        "api-reference/shipments/delete-shipment"
+      ]
+    },
+    {
+      "group": "Labels",
+      "pages": [
+        "api-reference/labels/retrieve-label",
+        "api-reference/labels/create-batch",
+        "api-reference/labels/retrieve-batch"
+      ]
+    },
+    {
+      "group": "Tracking",
+      "pages": [
+        "api-reference/tracking/tracking-status",
+        "api-reference/tracking/tracking-log"
+      ]
+    },
+    {
+      "group": "Webhooks",
+      "pages": [
+        "api-reference/webhooks/create-webhook",
+        "api-reference/webhooks/delete-webhook"
+      ]
+    }
+  ],
+  "footerSocials": {
+    "website": "https://evership.co.za"
+  },
+  "api": {
+    "baseUrl": "https://api.evership.app/v1",
+    "auth": {
+      "method": "key",
+      "name": "apiKey"
+    }
+  }
+}

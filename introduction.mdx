@@ -1,0 +1,40 @@
+---
+title: Introduction
+description: "Welcome to the Evership Shipments API documentation"
+---
+
+## Welcome to Evership
+
+Evership provides a unified shipping API that connects you to multiple carrier services across South Africa. With a single integration, you can get rates, create shipments, print labels, and track deliveries across all supported carriers.
+
+### What you can do with the Evership API
+
+<CardGroup cols={2}>
+  <Card title="Get Rates" icon="calculator" href="/api-reference/rates/get-rates">
+    Compare shipping rates across multiple carriers in a single request.
+  </Card>
+  <Card title="Create Shipments" icon="box" href="/api-reference/shipments/create-shipment">
+    Create shipments with sender and receiver details, parcel dimensions, and carrier preferences.
+  </Card>
+  <Card title="Print Labels" icon="tag" href="/api-reference/labels/retrieve-label">
+    Generate and retrieve shipping labels in multiple formats.
+  </Card>
+  <Card title="Track Deliveries" icon="location-dot" href="/api-reference/tracking/tracking-status">
+    Get real-time tracking status and detailed tracking logs for your shipments.
+  </Card>
+</CardGroup>
+
+## Base URL
+
+All API requests are made to:
+
+```
+https://api.evership.app/v1
+```
+
+## Getting Started
+
+1. **Sign up** for an Evership account at [evership.co.za](https://evership.co.za)
+2. **Get your API key** from the dashboard
+3. **Authenticate** your requests by including your API key in the `apiKey` header
+4. **Start shipping** by validating addresses, getting rates, and creating shipments
