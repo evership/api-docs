@@ -4,7 +4,7 @@
   "logo": {
     "dark": "/logo/dark.svg",
     "light": "/logo/light.svg",
-    "height": 20
+    "height": 14
   },
   "favicon": "/favicon.svg",
   "colors": {
