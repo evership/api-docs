@@ -17,6 +17,27 @@ Returns the current tracking status for one or more shipments. Supports batch lo
 curl -X GET "https://api.evership.app/v1/shipments/tracking-status?shipment_ids=ID_1,ID_2,ID_3" \
   -H "apiKey: YOUR_API_KEY"
 ```
+
+```javascript JavaScript
+const response = await fetch('https://api.evership.app/v1/shipments/tracking-status?shipment_ids=ID_1,ID_2,ID_3', {
+  method: 'GET',
+  headers: {
+    'apiKey': 'YOUR_API_KEY'
+  }
+});
+const data = await response.json();
+```
+
+```python Python
+import requests
+
+response = requests.get(
+    'https://api.evership.app/v1/shipments/tracking-status',
+    headers={'apiKey': 'YOUR_API_KEY'},
+    params={'shipment_ids': 'ID_1,ID_2,ID_3'}
+)
+data = response.json()
+```
 </RequestExample>
 
 <ResponseExample>

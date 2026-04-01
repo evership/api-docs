@@ -1,0 +1,161 @@
+---
+title: "Errors"
+description: "How the Evership API reports errors and how to handle them."
+---
+
+The Evership API uses conventional HTTP status codes and returns structured JSON error bodies so you can programmatically detect and resolve issues.
+
+## Error response format
+
+Most error responses follow this structure:
+
+```json
+{
+  "status": "fail",
+  "error_type": "validation error",
+  "message": "Something went wrong",
+  "errors": [
+    "The parcel length is required.",
+    "The parcel width is required."
+  ]
+}
+```
+
+| Field        | Type     | Description                                                                 |
+| ------------ | -------- | --------------------------------------------------------------------------- |
+| `status`     | string   | `"fail"` for client errors, `"error"` for server errors.                   |
+| `error_type` | string   | Machine-readable error category (e.g. `validation error`, `not_found`).    |
+| `message`    | string   | Human-readable summary of what went wrong.                                 |
+| `errors`     | string[] | List of specific error messages. Empty array when there are no details.     |
+
+<Note>
+  Some endpoints return domain-specific error shapes instead of the standard format. The business logic errors section below covers these cases.
+</Note>
+
+## HTTP status codes
+
+| Status Code | Meaning              | When it occurs                                                       |
+| ----------- | -------------------- | -------------------------------------------------------------------- |
+| `400`       | Bad Request          | The request body is malformed or missing required fields.            |
+| `401`       | Unauthorized         | The `apiKey` header is missing, invalid, or expired.                 |
+| `404`       | Not Found            | The requested resource (shipment, label, webhook, etc.) does not exist. |
+| `422`       | Validation Error     | The request is well-formed but fails business validation rules.      |
+| `500`       | Server Error         | Something went wrong on the Evership side.                           |
+
+## Error examples
+
+### Validation error (422)
+
+Returned when required fields are missing or values are out of range.
+
+```json
+{
+  "status": "fail",
+  "error_type": "validation error",
+  "errors": [
+    "The parcel length is required.",
+    "The parcel width is required."
+  ],
+  "message": "Something went wrong"
+}
+```
+
+### Not found (404)
+
+Returned when a resource ID does not match any existing record.
+
+```json
+{
+  "status": "fail",
+  "error_type": "not_found",
+  "message": "The requested resource was not found.",
+  "errors": []
+}
+```
+
+### Server error (500)
+
+Returned when an unexpected problem occurs on the server. Retry after a short delay.
+
+```json
+{
+  "status": "error",
+  "error_type": "server_error",
+  "message": "Something went wrong on the server."
+}
+```
+
+### Webhook validation error (422)
+
+Returned when creating or updating a webhook with an invalid event type.
+
+```json
+{
+  "message": "Validation failed",
+  "status": "fail",
+  "success": false,
+  "error_type": "validation error",
+  "errors": [
+    "Invalid event type. Please provide a valid event name such as: shipments, labels, tracking_status, tracking_log"
+  ]
+}
+```
+
+### Business logic error -- delete a purchased shipment
+
+Some operations return a summary/results structure instead of the standard error format. For example, attempting to delete a shipment that has already been purchased:
+
+```json
+{
+  "summary": {
+    "deleted": 0,
+    "failed": 1,
+    "total": 1
+  },
+  "results": [
+    {
+      "shipment_id": "4rOc1",
+      "status": "cannot_delete_purchased",
+      "error_message": "This shipment cannot be deleted as it has been purchased."
+    }
+  ]
+}
+```
+
+Check the `summary.failed` count and iterate over `results` to find individual failure reasons.
+
+## Common errors and solutions
+
+| Error message                                           | Cause                                          | Solution                                                                  |
+| ------------------------------------------------------- | ---------------------------------------------- | ------------------------------------------------------------------------- |
+| `The parcel length is required.`                        | Missing parcel dimensions in the request body. | Include `length`, `width`, `height`, and `weight` for every parcel.       |
+| `The requested resource was not found.`                 | Invalid or non-existent resource ID.           | Verify the ID. It may have been deleted or belong to a different account. |
+| `This shipment cannot be deleted as it has been purchased.` | Trying to delete a purchased shipment.     | Cancel the shipment first, or contact support if cancellation is not possible. |
+| `Invalid event type.`                                   | Webhook created with an unsupported event.     | Use one of: `shipments`, `labels`, `tracking_status`, `tracking_log`.     |
+| `Something went wrong on the server.`                   | Internal server error.                         | Wait a moment and retry. If it persists, contact support.                 |
+
+## Handling errors in code
+
+<Steps>
+
+<Step title="Check the HTTP status code">
+  Any `2xx` response means success. Anything else is an error. Branch your logic on the status code before parsing the body.
+</Step>
+
+<Step title="Parse the error body">
+  Read the `error_type` field to determine the category. Use the `errors` array for field-level details (useful for showing inline form validation to users).
+</Step>
+
+<Step title="Handle retries for server errors">
+  For `500` responses, implement exponential backoff. Start with a 1-second delay and double it on each retry, up to a maximum of 3 attempts.
+</Step>
+
+<Step title="Log everything">
+  Log the full error response body, the request that caused it, and the HTTP status code. This makes debugging much faster when something goes wrong in production.
+</Step>
+
+</Steps>
+
+<Info>
+  If you receive persistent `500` errors or encounter an error you cannot resolve, contact [Evership Support](mailto:support@evership.co.za) with the full request and response details.
+</Info>

@@ -1,0 +1,190 @@
+---
+title: "Quickstart"
+description: "Ship your first parcel with the Evership API in six steps."
+---
+
+<Note>
+  You need an API key to follow this guide. Log in to the [Evership Dashboard](https://app.evership.app), navigate to **Settings > API Keys**, and generate one. Pass it in the `apiKey` header on every request.
+</Note>
+
+The Evership shipping flow has six steps: validate the delivery address, fetch rates, create a shipment, purchase it, retrieve the label, and track it. This guide walks through each one with real cURL commands you can copy and run.
+
+All requests go to the base URL:
+
+```
+https://api.evership.app/v1
+```
+
+<Steps>
+
+<Step title="Validate the delivery address">
+
+Before requesting rates, confirm the delivery address is valid and serviceable. This catches typos and unsupported areas early.
+
+```bash
+curl -X POST https://api.evership.app/v1/validate-address \
+  -H "Content-Type: application/json" \
+  -H "apiKey: YOUR_API_KEY" \
+  -d '{
+    "street_address": "12 Bree Street",
+    "city": "Cape Town",
+    "zone": "Western Cape",
+    "postal_code": "8001",
+    "country_code": "ZA"
+  }'
+```
+
+The response confirms whether the address is valid. If validation fails, the `errors` array tells you exactly what to fix.
+
+</Step>
+
+<Step title="Get shipping rates">
+
+Send the collection address, delivery address, and parcel dimensions to receive available rates from multiple carriers.
+
+```bash
+curl -X POST https://api.evership.app/v1/rates \
+  -H "Content-Type: application/json" \
+  -H "apiKey: YOUR_API_KEY" \
+  -d '{
+    "collection_address": {
+      "street_address": "45 Strand Street",
+      "city": "Cape Town",
+      "zone": "Western Cape",
+      "postal_code": "8001",
+      "country_code": "ZA"
+    },
+    "delivery_address": {
+      "street_address": "12 Bree Street",
+      "city": "Cape Town",
+      "zone": "Western Cape",
+      "postal_code": "8001",
+      "country_code": "ZA"
+    },
+    "parcels": [
+      {
+        "length": 30,
+        "width": 20,
+        "height": 15,
+        "weight": 2.5
+      }
+    ]
+  }'
+```
+
+The response returns an array of rate objects, each with a carrier name, service type, estimated delivery time, and price. Use the `rate_id` from your preferred option when creating the shipment.
+
+</Step>
+
+<Step title="Create a shipment">
+
+Create a draft shipment by setting `purchase_label` to `false`. This reserves the details without committing to a purchase, so you can review or edit before paying.
+
+```bash
+curl -X POST https://api.evership.app/v1/shipments \
+  -H "Content-Type: application/json" \
+  -H "apiKey: YOUR_API_KEY" \
+  -d '{
+    "rate_id": "RATE_ID_FROM_STEP_2",
+    "purchase_label": false,
+    "collection_address": {
+      "street_address": "45 Strand Street",
+      "city": "Cape Town",
+      "zone": "Western Cape",
+      "postal_code": "8001",
+      "country_code": "ZA",
+      "company": "My Store",
+      "contact_name": "Jane Smith",
+      "contact_number": "0211234567",
+      "contact_email": "jane@mystore.co.za"
+    },
+    "delivery_address": {
+      "street_address": "12 Bree Street",
+      "city": "Cape Town",
+      "zone": "Western Cape",
+      "postal_code": "8001",
+      "country_code": "ZA",
+      "contact_name": "John Doe",
+      "contact_number": "0829876543",
+      "contact_email": "john@example.com"
+    },
+    "parcels": [
+      {
+        "length": 30,
+        "width": 20,
+        "height": 15,
+        "weight": 2.5
+      }
+    ]
+  }'
+```
+
+The response includes a `shipment_id`. Hold onto it -- you will need it for every subsequent step. The shipment status is `pending` at this point.
+
+</Step>
+
+<Step title="Purchase the shipment">
+
+When you are ready to commit, purchase the shipment. This assigns a carrier, generates a waybill number, and moves the status to `purchased`.
+
+```bash
+curl -X POST https://api.evership.app/v1/shipments/purchase \
+  -H "Content-Type: application/json" \
+  -H "apiKey: YOUR_API_KEY" \
+  -d '{
+    "shipment_ids": ["SHIPMENT_ID_FROM_STEP_3"]
+  }'
+```
+
+The response confirms the purchase and returns the assigned carrier and waybill number. Once purchased, the shipment can no longer be edited or deleted.
+
+<Info>
+  You can also set `purchase_label` to `true` in Step 3 to create and purchase in a single call, skipping this step entirely.
+</Info>
+
+</Step>
+
+<Step title="Retrieve the label">
+
+Download the shipping label so you can print it and attach it to the parcel. The `label_formats` parameter controls the label size.
+
+```bash
+curl -G https://api.evership.app/v1/shipments/label \
+  -H "apiKey: YOUR_API_KEY" \
+  --data-urlencode "shipment_id=SHIPMENT_ID" \
+  --data-urlencode "label_formats=10_10"
+```
+
+The response contains the label data (typically a PDF URL or base64-encoded content). Print it and stick it on the box before the carrier arrives for collection.
+
+<Info>
+  Common label formats include `10_10` (10 cm x 10 cm) and `A4`. Check the [Labels API reference](/api-reference/labels/retrieve-label) for all options.
+</Info>
+
+</Step>
+
+<Step title="Track the shipment">
+
+Poll the tracking endpoint to check the current status of your shipment at any time.
+
+```bash
+curl -G https://api.evership.app/v1/shipments/tracking-status \
+  -H "apiKey: YOUR_API_KEY" \
+  --data-urlencode "shipment_ids=SHIPMENT_ID"
+```
+
+The response includes the current status (e.g. `collection_requested`, `in_transit`, `delivered`) along with timestamps. See the [Shipment Lifecycle](/shipment-lifecycle) page for a full breakdown of every status.
+
+<Info>
+  For real-time updates without polling, set up a [webhook](/api-reference/webhooks/create-webhook) to receive status change notifications as they happen.
+</Info>
+
+</Step>
+
+</Steps>
+
+## Next steps
+
+- Browse the full [API Reference](/api-reference/introduction) for detailed request and response schemas.
+- Learn about [error handling](/errors) so your integration handles failures gracefully.
+- Understand every shipment state on the [Shipment Lifecycle](/shipment-lifecycle) page.

@@ -101,6 +101,81 @@ curl -X POST https://api.evership.app/v1/rates \
     "return_failed_quotes": false
   }'
 ```
+
+```javascript JavaScript
+const response = await fetch('https://api.evership.app/v1/rates', {
+  method: 'POST',
+  headers: {
+    'apiKey': 'YOUR_API_KEY',
+    'Content-Type': 'application/json'
+  },
+  body: JSON.stringify({
+    collection_address: {
+      address_1: '12 Clyde Rd',
+      suburb: 'Green Point',
+      city: 'Cape Town',
+      province: 'Western Cape',
+      postal_code: '8005',
+      country: 'South Africa'
+    },
+    delivery_address: {
+      address_1: '26 Washington Rd',
+      suburb: 'Claremont',
+      city: 'Cape Town',
+      province: 'Western Cape',
+      postal_code: '7708',
+      country: 'South Africa'
+    },
+    parcels: [
+      {
+        dimensions: { length: 6, width: 6, height: 6 },
+        weight: 1
+      }
+    ],
+    carrier: '',
+    carrier_service: '',
+    return_failed_quotes: false
+  })
+});
+const data = await response.json();
+```
+
+```python Python
+import requests
+
+response = requests.post(
+    'https://api.evership.app/v1/rates',
+    headers={'apiKey': 'YOUR_API_KEY'},
+    json={
+        'collection_address': {
+            'address_1': '12 Clyde Rd',
+            'suburb': 'Green Point',
+            'city': 'Cape Town',
+            'province': 'Western Cape',
+            'postal_code': '8005',
+            'country': 'South Africa'
+        },
+        'delivery_address': {
+            'address_1': '26 Washington Rd',
+            'suburb': 'Claremont',
+            'city': 'Cape Town',
+            'province': 'Western Cape',
+            'postal_code': '7708',
+            'country': 'South Africa'
+        },
+        'parcels': [
+            {
+                'dimensions': {'length': 6, 'width': 6, 'height': 6},
+                'weight': 1
+            }
+        ],
+        'carrier': '',
+        'carrier_service': '',
+        'return_failed_quotes': False
+    }
+)
+data = response.json()
+```
 </RequestExample>
 
 <ResponseExample>

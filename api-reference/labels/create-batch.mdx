@@ -21,6 +21,27 @@ Generates labels for multiple shipments in a single request. Returns a batch ID 
 curl -X GET "https://api.evership.app/v1/shipments/labels?shipment_ids=ID_1,ID_2,ID_3&label_formats=10_10" \
   -H "apiKey: YOUR_API_KEY"
 ```
+
+```javascript JavaScript
+const response = await fetch('https://api.evership.app/v1/shipments/labels?shipment_ids=ID_1,ID_2,ID_3&label_formats=10_10', {
+  method: 'GET',
+  headers: {
+    'apiKey': 'YOUR_API_KEY'
+  }
+});
+const data = await response.json();
+```
+
+```python Python
+import requests
+
+response = requests.get(
+    'https://api.evership.app/v1/shipments/labels',
+    headers={'apiKey': 'YOUR_API_KEY'},
+    params={'shipment_ids': 'ID_1,ID_2,ID_3', 'label_formats': '10_10'}
+)
+data = response.json()
+```
 </RequestExample>
 
 <ResponseExample>

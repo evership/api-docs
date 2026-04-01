@@ -69,6 +69,27 @@ Returns a paginated list of your shipments. Use query parameters to filter by da
 curl -X GET "https://api.evership.app/v1/shipments?page=1&results_per_page=25&carrier=dpd" \
   -H "apiKey: YOUR_API_KEY"
 ```
+
+```javascript JavaScript
+const response = await fetch('https://api.evership.app/v1/shipments?page=1&results_per_page=25&carrier=dpd', {
+  method: 'GET',
+  headers: {
+    'apiKey': 'YOUR_API_KEY'
+  }
+});
+const data = await response.json();
+```
+
+```python Python
+import requests
+
+response = requests.get(
+    'https://api.evership.app/v1/shipments',
+    headers={'apiKey': 'YOUR_API_KEY'},
+    params={'page': 1, 'results_per_page': 25, 'carrier': 'dpd'}
+)
+data = response.json()
+```
 </RequestExample>
 
 <ResponseExample>

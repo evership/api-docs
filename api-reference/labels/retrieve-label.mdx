@@ -21,6 +21,27 @@ Retrieves shipping labels for a purchased shipment. You can request labels in mu
 curl -X GET "https://api.evership.app/v1/shipments/label?shipment_id=SHIPMENT_ID&label_formats=10_10,10_15,a4_page" \
   -H "apiKey: YOUR_API_KEY"
 ```
+
+```javascript JavaScript
+const response = await fetch('https://api.evership.app/v1/shipments/label?shipment_id=SHIPMENT_ID&label_formats=10_10,10_15,a4_page', {
+  method: 'GET',
+  headers: {
+    'apiKey': 'YOUR_API_KEY'
+  }
+});
+const data = await response.json();
+```
+
+```python Python
+import requests
+
+response = requests.get(
+    'https://api.evership.app/v1/shipments/label',
+    headers={'apiKey': 'YOUR_API_KEY'},
+    params={'shipment_id': 'SHIPMENT_ID', 'label_formats': '10_10,10_15,a4_page'}
+)
+data = response.json()
+```
 </RequestExample>
 
 <ResponseExample>

@@ -31,6 +31,27 @@ Retrieves available shipping rates for a shipment that has already been created.
 curl -X GET "https://api.evership.app/v1/rates/SHIPMENT_ID?carrier=dpd&return_failed_quotes=false" \
   -H "apiKey: YOUR_API_KEY"
 ```
+
+```javascript JavaScript
+const response = await fetch('https://api.evership.app/v1/rates/SHIPMENT_ID?carrier=dpd&return_failed_quotes=false', {
+  method: 'GET',
+  headers: {
+    'apiKey': 'YOUR_API_KEY'
+  }
+});
+const data = await response.json();
+```
+
+```python Python
+import requests
+
+response = requests.get(
+    'https://api.evership.app/v1/rates/SHIPMENT_ID',
+    headers={'apiKey': 'YOUR_API_KEY'},
+    params={'carrier': 'dpd', 'return_failed_quotes': 'false'}
+)
+data = response.json()
+```
 </RequestExample>
 
 <ResponseExample>

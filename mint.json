@@ -52,7 +52,10 @@
       "group": "Get Started",
       "pages": [
         "introduction",
-        "authentication"
+        "quickstart",
+        "authentication",
+        "errors",
+        "shipment-lifecycle"
       ]
     },
     {

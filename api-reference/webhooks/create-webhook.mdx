@@ -30,4 +30,33 @@ curl -X POST https://api.evership.app/v1/webhooks \
     "events": ["shipments", "tracking_status"]
   }'
 ```
+
+```javascript JavaScript
+const response = await fetch('https://api.evership.app/v1/webhooks', {
+  method: 'POST',
+  headers: {
+    'apiKey': 'YOUR_API_KEY',
+    'Content-Type': 'application/json'
+  },
+  body: JSON.stringify({
+    url: 'https://your-app.com/webhooks/evership',
+    events: ['shipments', 'tracking_status']
+  })
+});
+const data = await response.json();
+```
+
+```python Python
+import requests
+
+response = requests.post(
+    'https://api.evership.app/v1/webhooks',
+    headers={'apiKey': 'YOUR_API_KEY'},
+    json={
+        'url': 'https://your-app.com/webhooks/evership',
+        'events': ['shipments', 'tracking_status']
+    }
+)
+data = response.json()
+```
 </RequestExample>
