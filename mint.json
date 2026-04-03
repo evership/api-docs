@@ -56,7 +56,8 @@
         "quickstart",
         "authentication",
         "errors",
-        "shipment-lifecycle"
+        "shipment-lifecycle",
+        "webhook-guide"
       ]
     },
     {

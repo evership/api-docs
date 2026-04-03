@@ -1,0 +1,321 @@
+---
+title: "Webhook Guide: TanStack Start"
+description: "Build a type-safe webhook handler in TanStack Start to receive real-time shipment tracking updates from Evership."
+---
+
+This guide walks you through building a webhook endpoint in [TanStack Start](https://tanstack.com/start) that receives real-time shipment updates from Evership. By the end, you'll have a fully typed API route that handles tracking events as they happen — no polling required.
+
+## Prerequisites
+
+- A TanStack Start project with API routes enabled
+- An Evership API key ([get one here](https://evership.app))
+- A tool like [ngrok](https://ngrok.com) to expose your local server during development
+
+## 1. Enable API routes
+
+Make sure your TanStack Start project has the API handler set up. If you don't already have an `app/api.ts` file, create one:
+
+```typescript app/api.ts
+import {
+  createStartAPIHandler,
+  defaultAPIFileRouteHandler,
+} from '@tanstack/start/api'
+
+export default createStartAPIHandler(defaultAPIFileRouteHandler)
+```
+
+This tells TanStack Start to route incoming API requests to your file-based API route handlers.
+
+## 2. Define your webhook types
+
+Create a types file for the Evership webhook payloads. These interfaces match the data Evership sends when a shipment's tracking status changes.
+
+```typescript app/lib/evership-types.ts
+export type WebhookEventType =
+  | "shipments"
+  | "labels"
+  | "tracking_status"
+  | "tracking_log";
+
+export interface TrackingStatusPayload {
+  shipment_id: string;
+  shipment_title: string;
+  waybill_number: string;
+  timestamp: string;
+  comments: string;
+  location: string;
+  latest_status: {
+    primary_status: {
+      status: string;
+      slug: ShipmentStatus;
+      code: number;
+    };
+    secondary_status: string;
+  };
+  created_time: string;
+  last_updated_time: string;
+  est_delivery: string;
+  est_delivery_text: string;
+}
+
+export type ShipmentStatus =
+  | "pending"
+  | "collection_requested"
+  | "collection_approved"
+  | "out_for_collection"
+  | "collected"
+  | "collection_failed"
+  | "in_transit"
+  | "out_for_delivery"
+  | "delivered"
+  | "delivery_failed"
+  | "returned"
+  | "exception"
+  | "cancelled"
+  | "error"
+  | "delayed";
+
+export interface TrackingLogEntry {
+  timestamp: string;
+  primary_status: {
+    status: string;
+    slug: string;
+    code: number | null;
+  };
+  comments: string;
+  location: string;
+}
+
+export interface TrackingLogPayload {
+  shipment_id: string;
+  shipment_title: string;
+  waybill_number: string;
+  latest_status: {
+    primary_status: {
+      status: string;
+      slug: string;
+      code: number;
+    };
+    secondary_status: string;
+  };
+  created_time: string;
+  last_updated_time: string;
+  est_delivery: string;
+  est_delivery_text: string;
+  tracking_log: TrackingLogEntry[];
+}
+```
+
+<Info>
+  See the [Shipment Lifecycle](/shipment-lifecycle) page for a full breakdown of every status and what it means.
+</Info>
+
+## 3. Create the webhook API route
+
+Create a new file at `app/routes/api/webhooks/evership.ts`. This is where Evership will send POST requests when events occur.
+
+```typescript app/routes/api/webhooks/evership.ts
+import { createAPIFileRoute } from '@tanstack/start/api'
+import type {
+  TrackingStatusPayload,
+  TrackingLogPayload,
+} from '~/lib/evership-types'
+
+export const APIRoute = createAPIFileRoute('/api/webhooks/evership')({
+  POST: async ({ request }) => {
+    const payload = await request.json()
+
+    // Route to the appropriate handler based on the event data
+    if (payload.tracking_log) {
+      handleTrackingLog(payload as TrackingLogPayload)
+    } else if (payload.latest_status) {
+      handleTrackingStatus(payload as TrackingStatusPayload)
+    }
+
+    // Always return 200 quickly so Evership knows you received it
+    return new Response(JSON.stringify({ received: true }), {
+      status: 200,
+      headers: { 'Content-Type': 'application/json' },
+    })
+  },
+})
+
+function handleTrackingStatus(data: TrackingStatusPayload) {
+  const { shipment_id, latest_status, waybill_number } = data
+  const status = latest_status.primary_status.slug
+
+  console.log(
+    `[Tracking] Shipment ${shipment_id} (${waybill_number}): ${status}`
+  )
+
+  // Example: react to specific statuses
+  switch (status) {
+    case 'collected':
+      // Parcel picked up — notify your customer
+      break
+    case 'in_transit':
+      // Moving through carrier network
+      break
+    case 'out_for_delivery':
+      // On the delivery vehicle — send "arriving today" notification
+      break
+    case 'delivered':
+      // Successfully delivered — update your order as complete
+      break
+    case 'delivery_failed':
+      // Delivery attempt failed — flag for follow-up
+      break
+    case 'collection_failed':
+      // Carrier couldn't collect — may need to rebook
+      break
+  }
+}
+
+function handleTrackingLog(data: TrackingLogPayload) {
+  const { shipment_id, tracking_log } = data
+
+  console.log(
+    `[Tracking Log] Shipment ${shipment_id}: ${tracking_log.length} events`
+  )
+
+  // Process each tracking event
+  for (const entry of tracking_log) {
+    console.log(
+      `  ${entry.timestamp} — ${entry.primary_status.status}: ${entry.comments}`
+    )
+  }
+}
+```
+
+<Warning>
+  Always return a `200` response as quickly as possible. Do any heavy processing (database writes, sending emails, etc.) asynchronously. If your endpoint takes too long to respond or returns an error, Evership may retry the webhook.
+</Warning>
+
+## 4. Register your webhook with Evership
+
+Once your endpoint is live, tell Evership where to send events. You only need to do this once.
+
+<CodeGroup>
+
+```bash cURL
+curl -X POST https://api.evership.app/v1/webhooks \
+  -H "apiKey: YOUR_API_KEY" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "url": "https://your-domain.com/api/webhooks/evership",
+    "events": ["tracking_status", "tracking_log"]
+  }'
+```
+
+```typescript TypeScript
+type WebhookEvent =
+  | "shipments"
+  | "labels"
+  | "tracking_status"
+  | "tracking_log";
+
+interface CreateWebhookRequest {
+  url: string;
+  events: WebhookEvent[];
+}
+
+const body: CreateWebhookRequest = {
+  url: 'https://your-domain.com/api/webhooks/evership',
+  events: ['tracking_status', 'tracking_log']
+};
+
+const response = await fetch('https://api.evership.app/v1/webhooks', {
+  method: 'POST',
+  headers: {
+    'apiKey': 'YOUR_API_KEY',
+    'Content-Type': 'application/json'
+  },
+  body: JSON.stringify(body)
+});
+const data = await response.json();
+```
+
+</CodeGroup>
+
+<Info>
+  You can subscribe to any combination of events: `shipments`, `labels`, `tracking_status`, and `tracking_log`. See the [Create Webhook](/api-reference/webhooks/create-webhook) reference for details.
+</Info>
+
+## 5. Test locally with ngrok
+
+During development, your `localhost` isn't reachable from the internet. Use ngrok to create a public tunnel:
+
+```bash
+# Start your TanStack Start dev server
+npm run dev
+
+# In another terminal, expose it
+ngrok http 3000
+```
+
+ngrok gives you a public URL like `https://a1b2c3d4.ngrok.io`. Register that as your webhook URL:
+
+```bash
+curl -X POST https://api.evership.app/v1/webhooks \
+  -H "apiKey: YOUR_API_KEY" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "url": "https://a1b2c3d4.ngrok.io/api/webhooks/evership",
+    "events": ["tracking_status"]
+  }'
+```
+
+Now purchase a test shipment and watch the tracking events arrive in your terminal.
+
+<Warning>
+  Remember to update your webhook URL to your production domain before going live. Delete the ngrok webhook with the [Delete Webhook](/api-reference/webhooks/delete-webhook) endpoint when you're done testing.
+</Warning>
+
+## 6. Example: saving status updates to a database
+
+Here's a more complete example that saves tracking updates to a database using Drizzle ORM (a common choice in TanStack Start projects):
+
+```typescript app/routes/api/webhooks/evership.ts
+import { createAPIFileRoute } from '@tanstack/start/api'
+import { db } from '~/lib/db'
+import { shipmentUpdates } from '~/lib/db/schema'
+import type { TrackingStatusPayload } from '~/lib/evership-types'
+
+export const APIRoute = createAPIFileRoute('/api/webhooks/evership')({
+  POST: async ({ request }) => {
+    const payload: TrackingStatusPayload = await request.json()
+
+    // Insert the status update into your database
+    await db.insert(shipmentUpdates).values({
+      shipmentId: payload.shipment_id,
+      waybillNumber: payload.waybill_number,
+      status: payload.latest_status.primary_status.slug,
+      secondaryStatus: payload.latest_status.secondary_status,
+      comments: payload.comments,
+      location: payload.location,
+      timestamp: new Date(payload.timestamp),
+      estDelivery: payload.est_delivery_text,
+    })
+
+    return new Response(JSON.stringify({ received: true }), {
+      status: 200,
+      headers: { 'Content-Type': 'application/json' },
+    })
+  },
+})
+```
+
+## Available webhook events
+
+| Event | Description | When it fires |
+| --- | --- | --- |
+| `tracking_status` | Current status snapshot | Each time a shipment's status changes |
+| `tracking_log` | Full tracking history | When new tracking log entries are added |
+| `shipments` | Shipment data | On shipment creation and status changes |
+| `labels` | Label data | When labels are generated |
+
+## Next steps
+
+- Review the full [Shipment Lifecycle](/shipment-lifecycle) to understand every status your webhook will receive.
+- See the [Tracking Status API](/api-reference/tracking/tracking-status) to understand the payload shape.
+- Use the [Delete Webhook](/api-reference/webhooks/delete-webhook) endpoint to remove webhooks you no longer need.
