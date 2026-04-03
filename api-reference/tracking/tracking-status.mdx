@@ -28,6 +28,46 @@ const response = await fetch('https://api.evership.app/v1/shipments/tracking-sta
 const data = await response.json();
 ```
 
+```typescript TypeScript
+interface TrackingStatusEntry {
+  shipment_id: string;
+  shipment_title: string;
+  waybill_number: string;
+  timestamp: string;
+  comments: string;
+  location: string;
+  latest_status: {
+    primary_status: {
+      status: string;
+      slug: string;
+      code: number;
+    };
+    secondary_status: string;
+  };
+  created_time: string;
+  last_updated_time: string;
+  est_delivery: string;
+  est_delivery_text: string;
+}
+
+interface TrackingStatusResponse {
+  shipments: TrackingStatusEntry[];
+}
+
+const shipmentIds: string[] = ['ID_1', 'ID_2', 'ID_3'];
+
+const response = await fetch(
+  `https://api.evership.app/v1/shipments/tracking-status?shipment_ids=${shipmentIds.join(',')}`,
+  {
+    method: 'GET',
+    headers: {
+      'apiKey': 'YOUR_API_KEY'
+    }
+  }
+);
+const data: TrackingStatusResponse = await response.json();
+```
+
 ```python Python
 import requests
 

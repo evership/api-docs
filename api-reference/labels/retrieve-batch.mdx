@@ -28,6 +28,27 @@ const response = await fetch('https://api.evership.app/v1/shipments/labels/BATCH
 const data = await response.json();
 ```
 
+```typescript TypeScript
+interface RetrieveLabelBatchResponse {
+  label_format: "10_10" | "10_15" | "a4_page";
+  label_batch_id: string;
+  label_url: string;
+}
+
+const batchId: string = 'BATCH_ID';
+
+const response = await fetch(
+  `https://api.evership.app/v1/shipments/labels/${batchId}`,
+  {
+    method: 'GET',
+    headers: {
+      'apiKey': 'YOUR_API_KEY'
+    }
+  }
+);
+const data: RetrieveLabelBatchResponse = await response.json();
+```
+
 ```python Python
 import requests
 

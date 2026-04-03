@@ -39,6 +39,51 @@ const response = await fetch('https://api.evership.app/v1/shipments/tracking-log
 const data = await response.json();
 ```
 
+```typescript TypeScript
+interface TrackingLogEntry {
+  timestamp: string;
+  primary_status: {
+    status: string;
+    slug: string;
+    code: number | null;
+  };
+  comments: string;
+  location: string;
+}
+
+interface TrackingLogResponse {
+  shipment_id: string;
+  shipment_title: string;
+  waybill_number: string;
+  latest_status: {
+    primary_status: {
+      status: string;
+      slug: string;
+      code: number;
+    };
+    secondary_status: string;
+  };
+  created_time: string;
+  last_updated_time: string;
+  est_delivery: string;
+  est_delivery_text: string;
+  tracking_log: TrackingLogEntry[];
+}
+
+const waybillNumber: string = 'CTR794257438';
+
+const response = await fetch(
+  `https://api.evership.app/v1/shipments/tracking-log?waybill_number=${waybillNumber}`,
+  {
+    method: 'GET',
+    headers: {
+      'apiKey': 'YOUR_API_KEY'
+    }
+  }
+);
+const data: TrackingLogResponse = await response.json();
+```
+
 ```python Python
 import requests
 

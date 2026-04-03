@@ -32,6 +32,32 @@ const response = await fetch('https://api.evership.app/v1/shipments/label?shipme
 const data = await response.json();
 ```
 
+```typescript TypeScript
+type LabelFormat = "10_10" | "10_15" | "a4_page";
+
+interface RetrieveLabelResponse {
+  shipment_id: string;
+  labels: {
+    label_url: string;
+    label_format: LabelFormat;
+  }[];
+}
+
+const shipmentId: string = 'SHIPMENT_ID';
+const formats: LabelFormat[] = ['10_10', '10_15', 'a4_page'];
+
+const response = await fetch(
+  `https://api.evership.app/v1/shipments/label?shipment_id=${shipmentId}&label_formats=${formats.join(',')}`,
+  {
+    method: 'GET',
+    headers: {
+      'apiKey': 'YOUR_API_KEY'
+    }
+  }
+);
+const data: RetrieveLabelResponse = await response.json();
+```
+
 ```python Python
 import requests
 

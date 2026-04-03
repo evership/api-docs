@@ -140,6 +140,132 @@ const response = await fetch('https://api.evership.app/v1/rates', {
 const data = await response.json();
 ```
 
+```typescript TypeScript
+interface Address {
+  address_1: string;
+  address_2?: string;
+  suburb: string;
+  city: string;
+  province: string;
+  postal_code: string;
+  country: string;
+  latitude?: string;
+  longitude?: string;
+}
+
+interface RateParcel {
+  dimensions: {
+    length: number;
+    width: number;
+    height: number;
+  };
+  weight: number;
+}
+
+interface GetRatesRequest {
+  collection_address: Address;
+  delivery_address: Address;
+  parcels: RateParcel[];
+  carrier?: string;
+  carrier_service?: string;
+  return_failed_quotes?: boolean;
+}
+
+interface CarrierService {
+  status: string;
+  code: string;
+  slug: string;
+  name: string;
+  transit_duration: number;
+  service_level: string;
+  service_description: string;
+  collection: {
+    cut_off_date: string;
+    cut_off_time: string;
+    collection_cut_off: string;
+  };
+  delivery: {
+    latest_est_date: string;
+    latest_est_time: string;
+    delivery_estimate: string;
+  };
+  rate: {
+    currency: string;
+    rate_ex_vat: string;
+    vat: string;
+    rate_inc_vat: string;
+  };
+}
+
+interface GetRatesResponse {
+  status: string;
+  service_count: {
+    total: number;
+    successful: number;
+    failed: number;
+  };
+  collection_address: {
+    validation_status: string;
+    geocoded_address: string;
+    coordinates: { latitude: number; longitude: number };
+  };
+  delivery_address: {
+    validation_status: string;
+    geocoded_address: string;
+    coordinates: { latitude: number; longitude: number };
+  };
+  carriers: {
+    name: string;
+    slug: string;
+    logos: { type: string; url: string }[];
+    collection_windows: {
+      windown_name: string;
+      start_time: string;
+      end_time: string;
+    }[];
+    services: CarrierService[];
+  }[];
+}
+
+const body: GetRatesRequest = {
+  collection_address: {
+    address_1: '12 Clyde Rd',
+    suburb: 'Green Point',
+    city: 'Cape Town',
+    province: 'Western Cape',
+    postal_code: '8005',
+    country: 'South Africa'
+  },
+  delivery_address: {
+    address_1: '26 Washington Rd',
+    suburb: 'Claremont',
+    city: 'Cape Town',
+    province: 'Western Cape',
+    postal_code: '7708',
+    country: 'South Africa'
+  },
+  parcels: [
+    {
+      dimensions: { length: 6, width: 6, height: 6 },
+      weight: 1
+    }
+  ],
+  carrier: '',
+  carrier_service: '',
+  return_failed_quotes: false
+};
+
+const response = await fetch('https://api.evership.app/v1/rates', {
+  method: 'POST',
+  headers: {
+    'apiKey': 'YOUR_API_KEY',
+    'Content-Type': 'application/json'
+  },
+  body: JSON.stringify(body)
+});
+const data: GetRatesResponse = await response.json();
+```
+
 ```python Python
 import requests
 

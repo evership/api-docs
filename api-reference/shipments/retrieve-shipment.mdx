@@ -28,6 +28,130 @@ const response = await fetch('https://api.evership.app/v1/shipments/SHIPMENT_ID'
 const data = await response.json();
 ```
 
+```typescript TypeScript
+interface Shipment {
+  shipment_id: string;
+  waybill_number: string;
+  created_at: string;
+  last_updated_at: string;
+  shipment_title: string;
+  shipment_type: string;
+  payment_status: string;
+  label_purchased: boolean;
+  collection_date: string;
+  billing: {
+    transaction_id: string;
+    timestamp: string;
+    type: string;
+    description: string;
+    transaction_ex_vat: number;
+    transaction_vat: number;
+    transaction_inc_vat: number;
+    transaction_status: string;
+  }[];
+  sender: {
+    name: string;
+    contact: string;
+    email: string;
+    collection_address: {
+      address_1: string;
+      address_2: string;
+      suburb: string;
+      city: string;
+      province: string;
+      postal_code: string;
+      country: string;
+      full_address: string;
+      latitude: number;
+      longitude: number;
+      geocode_status: string;
+    };
+    pickup_instructions: string;
+  };
+  receiver: {
+    name: string;
+    contact: string;
+    email: string;
+    delivery_address: {
+      address_1: string;
+      address_2: string;
+      suburb: string;
+      city: string;
+      province: string;
+      postal_code: string;
+      country: string;
+      full_address: string;
+      latitude: number;
+      longitude: number;
+      geocode_status: string;
+    };
+    drop_off_instructions: string;
+  };
+  latest_status: {
+    primary_status: {
+      status: string;
+      slug: string;
+      code: number;
+    };
+    secondary_status: string;
+  };
+  services: {
+    service_type: string;
+    carrier_slug: string;
+    carrier_name: string;
+    service_name: string;
+    service_slug: string;
+    service_full_name: string;
+    service_sla_text: string;
+    service_transit_days: number;
+  }[];
+  parcels: {
+    id: string;
+    parcel_number: string;
+    reference: string;
+    description: string;
+    dimensions: {
+      length_cm: number;
+      width_cm: number;
+      height_cm: number;
+    };
+    weight_kg: number;
+  }[];
+  tracking_log: {
+    timestamp: string;
+    primary_status: { status: string; slug: string; code: number | null };
+    comments: string;
+    location: string;
+  }[];
+  est_delivery: {
+    est_delivery_date: string;
+    est_delivery_time: string;
+    est_delivery_text: string;
+  };
+  tracking_link: {
+    receiver: string;
+    sender: string;
+  };
+  labels: {
+    label_url: string;
+    label_format: string;
+  }[];
+}
+
+const shipmentId: string = 'SHIPMENT_ID';
+
+const response = await fetch(
+  `https://api.evership.app/v1/shipments/${shipmentId}`,
+  {
+    method: 'GET',
+    headers: {
+      'apiKey': 'YOUR_API_KEY'
+    }
+  }
+);
+const data: Shipment = await response.json();
+```
+
 ```python Python
 import requests
 
